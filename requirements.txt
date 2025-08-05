@@ -1,0 +1,17 @@
+# 主要框架与库
+torch
+torchvision
+ultralytics
+streamlit==1.32.2
+streamlit-drawable-canvas==0.9.3
+pandas
+easyocr
+sentence-transformers
+
+# 基础依赖
+numpy
+Pillow
+scikit-learn
+scipy
+PyYAML
+tqdm

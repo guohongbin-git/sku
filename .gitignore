@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Large binaries and models
+*.pt
+*.pkl
+
+# Chrome binaries
+chrome-mac-arm64/
+chromedriver-mac-arm64/
+
+# Training runs
+runs/
+
+# IDE and environment files
+.idea/
+.vscode/
+*.pyc
+__pycache__/

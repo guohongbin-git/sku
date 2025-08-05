@@ -1,0 +1,8 @@
+train: /Users/guohongbin/projects/识别/yolo_dataset/images/train
+val: /Users/guohongbin/projects/识别/yolo_dataset/images/val
+nc: 4
+names:
+- 东方树叶 乌龙茶 500ml
+- 东方树叶 红茶 500ml
+- 东方树叶 绿茶 500ml
+- 东方树叶 茉莉花茶 500ml

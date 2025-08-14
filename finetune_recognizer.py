@@ -11,10 +11,10 @@ import random
 from tqdm import tqdm
 
 # --- 配置 ---
-ANNOTATIONS_CSV = Path('/Users/guohongbin/projects/识别/bbox_labels.csv')
-OUTPUT_MODEL_PATH = Path('/Users/guohongbin/projects/识别/finetuned_resnet50_aug.pt') # 新模型文件名
+ANNOTATIONS_CSV = Path('bbox_labels.csv')
+OUTPUT_MODEL_PATH = Path('finetuned_resnet50_aug.pt') # 新模型文件名
 # 训练参数
-NUM_EPOCHS = 50 # 增加训练周期以适应更复杂的数据
+NUM_EPOCHS = 2 # 为了在环境中快速完成，减少周期数
 BATCH_SIZE = 8
 LEARNING_RATE = 0.0001
 MARGIN = 0.2

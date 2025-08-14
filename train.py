@@ -8,8 +8,8 @@ def main():
     # 使用我们准备好的数据集对模型进行微调
     # 训练结果，包括模型权重和日志，将保存在 'runs/train' 目录下
     results = model.train(
-        data='/Users/guohongbin/projects/识别/yolo_dataset/data.yaml',
-        epochs=50,          # 训练50个周期
+        data='yolo_dataset_sanitized/data.yaml',
+        epochs=2,           # 为了在环境中快速完成，减少周期数
         imgsz=640,          # 输入图像大小为640x640
         project='runs/train', # 将训练结果保存在 'runs/train' 目录下
         name='oriental_leaf_exp1' # 本次实验的名称

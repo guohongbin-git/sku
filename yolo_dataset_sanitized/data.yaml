@@ -1,0 +1,11 @@
+train: images/train
+val: images/val
+nc: 7
+names:
+- 东方树叶 乌龙茶 500ml
+- 东方树叶 红茶 500ml
+- 东方树叶 绿茶 500ml
+- 东方树叶 茉莉花茶 500ml
+- 可口可乐 摩登 330ml
+- 可口可乐 瓶装 300ml
+- 可口可乐 零度 300ml

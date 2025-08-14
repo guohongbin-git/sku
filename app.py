@@ -2,10 +2,6 @@ import os
 # ** 在导入任何其他库之前，首先设置环境变量 **
 os.environ['TRANSFORMERS_NO_TENSORFLOW'] = 'true'
 
-import os
-# ** 在导入任何其他库之前，首先设置环境变量 **
-os.environ['TRANSFORMERS_NO_TENSORFLOW'] = 'true'
-
 import streamlit as st
 import torch
 import torch.nn as nn
@@ -22,9 +18,10 @@ import easyocr
 from sentence_transformers import SentenceTransformer
 
 # --- 配置 ---
-LIBRARY_FILE = Path('/Users/guohongbin/projects/识别/sku_library_multimodal.pkl')
-FINETUNED_VISUAL_MODEL_PATH = Path('/Users/guohongbin/projects/识别/finetuned_resnet50_aug.pt')
-YOLO_MODEL_PATH = 'yolov8n.pt'
+# 使用相对路径，确保项目可移植
+LIBRARY_FILE = Path('sku_library_multimodal.pkl')
+FINETUNED_VISUAL_MODEL_PATH = Path('finetuned_resnet50_aug.pt')
+YOLO_MODEL_PATH = 'runs/train/oriental_leaf_exp1/weights/best.pt'  # 更新为我们刚刚训练好的模型
 TEXT_MODEL_NAME = 'paraphrase-multilingual-MiniLM-L12-v2'
 # --- (结束) ---
 

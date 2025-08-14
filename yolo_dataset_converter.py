@@ -7,9 +7,9 @@ from PIL import Image
 
 # --- 配置 ---
 # 输入文件
-ANNOTATIONS_CSV = Path('/Users/guohongbin/projects/识别/bbox_labels.csv')
+ANNOTATIONS_CSV = Path('bbox_labels.csv')
 # 输出目录
-DATASET_ROOT = Path('/Users/guohongbin/projects/识别/yolo_dataset')
+DATASET_ROOT = Path('yolo_dataset_sanitized') # 使用一个全新的、不带中文的目录
 # --- (结束) ---
 
 def convert_bbox_to_yolo(img_width, img_height, bbox):
@@ -51,9 +51,9 @@ def main():
         return
 
     # 2. 准备目录结构
-    print(f"正在清空并重建数据集目录: {DATASET_ROOT}")
-    if DATASET_ROOT.exists():
-        shutil.rmtree(DATASET_ROOT)
+    print(f"正在创建新的数据集目录: {DATASET_ROOT}")
+    # if DATASET_ROOT.exists():
+    #     shutil.rmtree(DATASET_ROOT) # 注释掉此行以避免操作原始的、有问题的目录
     
     # 创建所有需要的子目录
     train_img_dir = DATASET_ROOT / 'images' / 'train'
@@ -75,14 +75,24 @@ def main():
     train_paths, val_paths = train_test_split(image_paths, test_size=0.2, random_state=42)
     print(f"数据集划分: {len(train_paths)} 张训练图片, {len(val_paths)} 张验证图片。")
 
-    # 5. 处理并保存数据
+    # 5. 处理并保存数据 (包含文件名清理逻辑)
+    file_counter = 0
     def process_split(paths, img_dir, label_dir, split_name):
+        nonlocal file_counter
         print(f"\n正在处理 {split_name} 集...")
         for img_path_str in paths:
             img_path = Path(img_path_str)
             
-            # 复制图片文件
-            shutil.copy(img_path, img_dir / img_path.name)
+            # --- 文件名清理 ---
+            # 创建一个纯ASCII、唯一的、从0开始递增的文件名
+            new_stem = f"img_{file_counter:05d}"
+            file_counter += 1
+            new_img_path = img_dir / f"{new_stem}{img_path.suffix}"
+            new_label_path = label_dir / f"{new_stem}.txt"
+            # --- 清理结束 ---
+
+            # 复制并重命名图片文件
+            shutil.copy(img_path, new_img_path)
             
             # 获取图片尺寸
             with Image.open(img_path) as img:
@@ -91,9 +101,8 @@ def main():
             # 获取该图片的所有标注
             annotations = df[df['image_path'] == img_path_str]
             
-            # 创建对应的标签文件
-            label_file_path = label_dir / (img_path.stem + '.txt')
-            with open(label_file_path, 'w', encoding='utf-8') as f:
+            # 使用新的、清理过的文件名创建对应的标签文件
+            with open(new_label_path, 'w', encoding='utf-8') as f:
                 for _, row in annotations.iterrows():
                     class_id = class_to_id[row['label']]
                     bbox = (row['xmin'], row['ymin'], row['xmax'], row['ymax'])
@@ -106,9 +115,10 @@ def main():
     process_split(val_paths, val_img_dir, val_label_dir, "验证")
 
     # 6. 创建 data.yaml 文件
+    # 路径应该是相对于 data.yaml 文件本身
     yaml_data = {
-        'train': str(train_img_dir.resolve()),
-        'val': str(val_img_dir.resolve()),
+        'train': 'images/train',
+        'val': 'images/val',
         'nc': len(class_names),
         'names': class_names
     }
@@ -116,7 +126,7 @@ def main():
     yaml_path = DATASET_ROOT / 'data.yaml'
     with open(yaml_path, 'w', encoding='utf-8') as f:
         yaml.dump(yaml_data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
-    print(f"\n已生成YOLO配置文件: {yaml_path.resolve()}")
+    print(f"\n已生成YOLO配置文件: {yaml_path}")
 
     print("\n--- 数据集准备完成！ ---")
     print("现在可以开始训练YOLO模型了。")

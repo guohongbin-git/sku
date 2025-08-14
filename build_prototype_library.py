@@ -17,10 +17,11 @@ import easyocr
 from sentence_transformers import SentenceTransformer
 
 # --- 配置 ---
-ANNOTATIONS_CSV = Path('/Users/guohongbin/projects/识别/bbox_labels.csv')
-FINETUNED_VISUAL_MODEL_PATH = Path('/Users/guohongbin/projects/识别/finetuned_resnet50_aug.pt')
+# 使用相对路径，确保项目可移植
+ANNOTATIONS_CSV = Path('bbox_labels.csv')
+FINETUNED_VISUAL_MODEL_PATH = Path('finetuned_resnet50_aug.pt')
 # ** 输出最终的多模态知识库 **
-OUTPUT_LIBRARY_FILE = Path('/Users/guohongbin/projects/识别/sku_library_multimodal.pkl')
+OUTPUT_LIBRARY_FILE = Path('sku_library_multimodal.pkl')
 # ** Sentence Transformer 模型，用于文本编码 **
 TEXT_MODEL_NAME = 'paraphrase-multilingual-MiniLM-L12-v2'
 # --- (结束) ---
